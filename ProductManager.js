@@ -1,6 +1,6 @@
 class ProductManager {
- 
-    constructor () {
+
+    constructor() {
         this.products = [];
         this.id = 1;
     }
@@ -9,25 +9,30 @@ class ProductManager {
         return allProducts;
     }
     addProducts(title, description, price, thumbnail, code, stock) {
+        if (title && description && price && thumbnail && code && stock) {
 
-        const invalidCode = this.products.some((prod) => prod.code === code);
+            const invalidCode = this.products.some((prod) => prod.code === code);
 
-        if(invalidCode){
-            console.log(`\n ~~ ERROR ~~ \n El código del producto ${title} es inválido. \n Revise e ingrese nuevamente otro código. \n ~~ x ~~`)
+            if (invalidCode) {
+                console.log(`\n ~~ ERROR ~~ \n El código del producto ${title} es inválido. \n Revise e ingrese nuevamente otro código. \n ~~ x ~~`)
+            }
+            else {
+                const prodID = this.idGenerator();
+                const prod = { id: prodID, title, description, price, thumbnail, code, stock }
+                this.products.push(prod)
+                console.log(`\n ~~ x ~~ \n Producto agregado exitosamente \n ~~ x ~~`)
+            }
+
+        } else {
+            console.log(`\n ~~ ERROR ~~ \n Todos los datos son obligatorios al agregar un producto. \n ~~ x ~~`)
         }
-        else{
-            const prodID = this.idGenerator();
-            const prod = { id:prodID, title, description, price, thumbnail, code, stock }
-            this.products.push(prod)  
-            console.log(`\n ~~ x ~~ \n Producto agregado exitosamente \n ~~ x ~~`)
-        }
-        
+
     }
-    getProductsByID(id){
+    getProductsByID(id) {
         const matchProd = this.products.find((prod) => prod.id === id);
         return matchProd ? matchProd : "\n ~~ x ~~\n ID Not Found. \n ~~ x ~~"
     }
-    idGenerator(){ return this.id++ } 
+    idGenerator() { return this.id++ }
 }
 
 /* 
@@ -44,6 +49,9 @@ const p = new ProductManager()
 console.log(`~~ Array Vacío (Sin Productos) ~~`)
 console.log(p.getProducts())
 
+
+// Se llamará al método “addProduct” con un parámetro menos y aparezca el error de validación.
+p.addProducts("producto prueba", 200, "Sin Imagen", "abc123", 25)
 
 // Se llamará al método “addProduct” con los campos: 
 p.addProducts("producto prueba", "Este es un producto prueba", 200, "Sin Imagen", "abc123", 25)
